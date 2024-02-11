@@ -4,6 +4,12 @@ export async function getCategories() {
     return data
 }
 
+export async function showCategory(category) {
+    const response = await fetch(`http://localhost:3000/categories/${category}`)
+    const data = await response.json()
+    return data
+}
+
 export async function storeCategory(category) {
     const response = await fetch("http://localhost:3000/categories", {
         method: "POST",
@@ -25,6 +31,27 @@ export async function storeCategory(category) {
     }
 }
 
+export async function updateCategory(id, category) {
+    const response = await fetch(`http://localhost:3000/categories/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(category)
+    })
+    if (response.ok) {
+        return {
+            status: true,
+            message: "update"
+        }
+    } else {
+        return {
+            status: false,
+            message: "Error"
+        }
+    }
+}
+
 export async function destroyCategory(category) {
     const response = await fetch(`http://localhost:3000/categories/${category}`, {
         method: "DELETE",
@@ -32,7 +59,7 @@ export async function destroyCategory(category) {
             "Content-Type": "application/json"
         },
     })
-    
+
     if (response.ok) {
         return {
             status: true,

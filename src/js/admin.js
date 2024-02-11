@@ -1,5 +1,5 @@
 import { smallAlertError, smallAlertSuccess } from '../components/alerts'
-import { destroyCategory, getCategories, storeCategory } from '../components/async_funtions_categories'
+import { destroyCategory, getCategories, showCategory, storeCategory, updateCategory } from '../components/async_funtions_categories'
 import { getNews } from '../components/async_funtions_news'
 import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
@@ -11,6 +11,7 @@ const formCategory = document.getElementById("form-category")
 const nameCategory = document.getElementById("nameCategory")
 const descriptionCategory = document.getElementById("descriptionCategory")
 const closeModal = document.querySelector(".close-modal")
+let idTemp
 
 const indexCatergories = (data) => {
     categoriesTbody.innerHTML = ""
@@ -21,7 +22,7 @@ const indexCatergories = (data) => {
             <td>${element.name}</td>
             <td>${element.description}</td>
             <td>
-                <button class="btn btn-primary edit" data-id="${element.id}">Edit</button>
+                <button class="btn btn-primary edit" data-bs-toggle="modal" data-bs-target="#modal-category" data-id="${element.id}">Edit</button>
                 <button class="btn btn-danger delete" data-id="${element.id}">Delete</button>
             </td>
         </tr>
@@ -54,27 +55,43 @@ const indexNews = (data) => {
 
 formCategory.addEventListener("submit", async (event) => {
     event.preventDefault()
-    const newCategory = {
+    const category = {
         name: nameCategory.value,
         description: descriptionCategory.value
     }
 
-    const response = await storeCategory(newCategory)
-    if (response.status) {
-        closeModal.click()
-        formCategory.reset()
-        indexCatergories(await getCategories())
-        smallAlertSuccess(response.message)
+    if (idTemp === undefined) {
+        const response = await storeCategory(category)
+        if (response.status) {
+            closeModal.click()
+            formCategory.reset()
+            indexCatergories(await getCategories())
+            smallAlertSuccess(response.message)
+        } else {
+            smallAlertError(response.message)
+        }
     } else {
-        smallAlertError(response.message)
-    }
+        const response = await updateCategory(idTemp, category)
+        if (response.status) {
+            closeModal.click()
+            formCategory.reset()
+            indexCatergories(await getCategories())
+            smallAlertSuccess(response.message)
+            idTemp = undefined
+        } else {
+            smallAlertError(response.message)
+        }
 
+    }
 })
 
 
 categoriesTbody.addEventListener("click", async (event) => {
     if (event.target.classList.contains("edit")) {
-        alert("edit")
+        idTemp = event.target.getAttribute("data-id")
+        const categoryEdit = await showCategory(idTemp)
+        nameCategory.value = categoryEdit.name
+        descriptionCategory.value = categoryEdit.description
     }
 
     if (event.target.classList.contains("delete")) {
@@ -102,4 +119,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     indexNews(news)
     indexCatergories(categories)
 })
+
 
