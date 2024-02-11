@@ -14,7 +14,6 @@ const closeModal = document.querySelector(".close-modal")
 let idTemp
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // const news = await getNews()
     renderCategories()
 })
 
@@ -110,12 +109,11 @@ categoriesTbody.addEventListener("click", async (event) => {
     if (event.target.classList.contains("delete")) {
         const id = event.target.getAttribute("data-id")
         const response = await destroyCategory(id)
-        if (response.status) {
+        if (response.ok) {
+            smallAlertSuccess(response.statusText)
             renderCategories()
-            smallAlertSuccess(response.message)
         } else {
-            renderCategories()
-            smallAlertError(response.message)
+            smallAlertError(response.statusText)
         }
     }
 })

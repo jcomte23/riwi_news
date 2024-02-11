@@ -57,16 +57,8 @@ export async function destroyCategory(category) {
             "Content-Type": "application/json"
         },
     })
-
-    if (response.ok) {
-        return {
-            status: true,
-            message: "Delete"
-        }
-    } else {
-        return {
-            status: false,
-            message: "Error"
-        }
+    return {
+        ok: response.ok,
+        statusText: response.statusText
     }
 }
