@@ -31,7 +31,8 @@ const indexNews = (data) => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    indexNews(await getNews())
+    const news = await getNews()
+    indexNews(news)
 })
 
 
