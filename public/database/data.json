@@ -1,1 +1,11 @@
-{}
+{
+    "news":[
+        {
+            "id":"1",
+            "image":"nada",
+            "title":"noticia de prueba",
+            "publicationDate":"2-11-2024",
+            "content":"esta es una noticia de prueba"
+        }
+    ]
+}
