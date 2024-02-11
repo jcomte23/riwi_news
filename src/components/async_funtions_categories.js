@@ -44,16 +44,9 @@ export async function updateCategory(id, category) {
         },
         body: JSON.stringify(category)
     })
-    if (response.ok) {
-        return {
-            status: true,
-            message: "update"
-        }
-    } else {
-        return {
-            status: false,
-            message: "Error"
-        }
+    return {
+        ok: response.ok,
+        statusText: response.statusText
     }
 }
 

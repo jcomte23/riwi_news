@@ -87,16 +87,15 @@ formCategory.addEventListener("submit", async (event) => {
         }
     } else {
         const response = await updateCategory(idTemp, category)
-        if (response.status) {
-            closeModal.click()
+        if (response.ok) {
             formCategory.reset()
-            renderCategories()
-            smallAlertSuccess(response.message)
+            smallAlertSuccess(response.statusText)
+            closeModal.click()
             idTemp = undefined
+            renderCategories()
         } else {
-            smallAlertError(response.message)
+            smallAlertError(response.statusText)
         }
-
     }
 })
 
