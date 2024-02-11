@@ -1,4 +1,4 @@
-import { getCategories } from '../components/async_funtions_categories'
+import { getCategories, storeCategory } from '../components/async_funtions_categories'
 import { getNews } from '../components/async_funtions_news'
 import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
@@ -6,19 +6,17 @@ import * as bootstrap from 'bootstrap'
 const btnLogout = document.getElementById("logout")
 const categoriesTbody = document.getElementById("categorias-tbody")
 const newsTbody = document.getElementById("news-tbody")
-
-btnLogout.addEventListener("click", () => {
-    localStorage.setItem("userOnline", JSON.stringify(""))
-    localStorage.setItem("isAutorizated", JSON.stringify(false))
-    window.location.href = "/"
-})
+const formCategory = document.getElementById("form-category")
+const nameCategory = document.getElementById("nameCategory")
+const descriptionCategory = document.getElementById("descriptionCategory")
+const closeModal = document.querySelector(".close-modal")
 
 const indexCatergories = (data) => {
     categoriesTbody.innerHTML = ""
-    data.forEach((element,index) => {
+    data.forEach((element, index) => {
         categoriesTbody.innerHTML += `
         <tr>
-            <td>${index+1}</td>
+            <td>${index + 1}</td>
             <td>${element.name}</td>
             <td>${element.description}</td>
             <td>
@@ -59,4 +57,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     indexNews(news)
     indexCatergories(categories)
 })
+
+btnLogout.addEventListener("click", () => {
+    localStorage.setItem("userOnline", JSON.stringify(""))
+    localStorage.setItem("isAutorizated", JSON.stringify(false))
+    window.location.href = "/"
+})
+
+formCategory.addEventListener("submit", async (event) => {
+    event.preventDefault()
+    const newCategory = {
+        name: nameCategory.value,
+        description: descriptionCategory.value
+    }
+
+    const response = await storeCategory(newCategory)
+    if (response.created) {
+        closeModal.click()
+        indexCatergories(await getCategories())
+    } else {
+        alert(response.message)
+    }
+
+})
+
+
 
