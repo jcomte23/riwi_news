@@ -1,5 +1,5 @@
 import { smallAlertError, smallAlertSuccess } from '../components/alerts'
-import { getCategories, storeCategory } from '../components/async_funtions_categories'
+import { destroyCategory, getCategories, storeCategory } from '../components/async_funtions_categories'
 import { getNews } from '../components/async_funtions_news'
 import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
@@ -21,8 +21,8 @@ const indexCatergories = (data) => {
             <td>${element.name}</td>
             <td>${element.description}</td>
             <td>
-                <button class="btn btn-primary">Edit</button>
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-primary edit" data-id="${element.id}">Edit</button>
+                <button class="btn btn-danger delete" data-id="${element.id}">Delete</button>
             </td>
         </tr>
         `
@@ -52,12 +52,6 @@ const indexNews = (data) => {
     })
 }
 
-btnLogout.addEventListener("click", () => {
-    localStorage.setItem("userOnline", JSON.stringify(""))
-    localStorage.setItem("isAutorizated", JSON.stringify(false))
-    window.location.href = "/"
-})
-
 formCategory.addEventListener("submit", async (event) => {
     event.preventDefault()
     const newCategory = {
@@ -66,8 +60,9 @@ formCategory.addEventListener("submit", async (event) => {
     }
 
     const response = await storeCategory(newCategory)
-    if (response.created) {
+    if (response.status) {
         closeModal.click()
+        formCategory.reset()
         indexCatergories(await getCategories())
         smallAlertSuccess(response.message)
     } else {
@@ -76,11 +71,36 @@ formCategory.addEventListener("submit", async (event) => {
 
 })
 
+
+categoriesTbody.addEventListener("click", async (event) => {
+
+    if (event.target.classList.contains("edit")) {
+        alert("edit")
+    }
+
+    if (event.target.classList.contains("delete")) {
+        const id = event.target.getAttribute("data-id")
+        const response = destroyCategory(id)
+        if (response.status) {
+            indexCatergories(await getCategories())
+            smallAlertSuccess(response.message)
+        } else {
+            indexCatergories(await getCategories())
+            smallAlertError(response.message)
+        }
+    }
+})
+
+btnLogout.addEventListener("click", () => {
+    localStorage.setItem("userOnline", JSON.stringify(""))
+    localStorage.setItem("isAutorizated", JSON.stringify(false))
+    window.location.href = "/"
+})
+
 document.addEventListener("DOMContentLoaded", async () => {
     const news = await getNews()
     const categories = await getCategories()
     indexNews(news)
     indexCatergories(categories)
 })
-
 
