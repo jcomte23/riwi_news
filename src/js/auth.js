@@ -15,6 +15,7 @@ formLogin.addEventListener("submit", async (event) => {
     } else {
         if (userFound.data.password === password.value) {
             localStorage.setItem("userOnline", JSON.stringify(userFound.data))
+            localStorage.setItem("isAutorizated", JSON.stringify(true))
             window.location.href = "../admin/administrator.html"
         } else {
             password.classList.add("is-invalid")
