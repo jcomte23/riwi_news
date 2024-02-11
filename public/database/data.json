@@ -7,5 +7,13 @@
             "publicationDate":"2-11-2024",
             "content":"esta es una noticia de prueba"
         }
+    ],
+    "users":[
+        {
+            "id":"1",
+            "name":"javier cómbita téllez",
+            "email":"jcomte23@outlook.com",
+            "password":"Combita2364+"
+        }
     ]
 }
