@@ -5,6 +5,7 @@ import { getNews } from '../components/asyn_funtions_news'
 const containerNews = document.getElementById("container-news")
 
 const indexNews = (data) => {
+    containerNews.innerHTML = ""
     data.forEach(element => {
         containerNews.innerHTML += `
         <section class="card mb-3" style="max-width: 540px">
