@@ -2,7 +2,7 @@
     "news":[
         {
             "id":"1",
-            "image":"nada",
+            "image":"https://img.freepik.com/foto-gratis/mano-que-sostiene-campana-anuncios-marketing-megafono_53876-129003.jpg",
             "title":"noticia de prueba",
             "publicationDate":"2-11-2024",
             "content":"esta es una noticia de prueba"
