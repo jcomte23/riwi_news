@@ -32,6 +32,7 @@ export async function destroyCategory(category) {
             "Content-Type": "application/json"
         },
     })
+    
     if (response.ok) {
         return {
             status: true,

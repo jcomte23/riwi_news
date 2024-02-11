@@ -73,14 +73,13 @@ formCategory.addEventListener("submit", async (event) => {
 
 
 categoriesTbody.addEventListener("click", async (event) => {
-
     if (event.target.classList.contains("edit")) {
         alert("edit")
     }
 
     if (event.target.classList.contains("delete")) {
         const id = event.target.getAttribute("data-id")
-        const response = destroyCategory(id)
+        const response = await destroyCategory(id)
         if (response.status) {
             indexCatergories(await getCategories())
             smallAlertSuccess(response.message)
