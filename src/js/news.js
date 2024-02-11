@@ -1,6 +1,6 @@
 import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
-import { getNews } from '../components/asyn_funtions_news'
+import { getNews } from '../components/async_funtions_news'
 
 const containerNews = document.getElementById("container-news")
 
