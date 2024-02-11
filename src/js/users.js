@@ -9,7 +9,7 @@ const password = document.getElementById("password")
 
 formLogin.addEventListener("submit", async (event) => {
     event.preventDefault()
-    const userFound = await showUserWithEmail(email.value)
+    const userFound = await showUserWithEmail(email)
     if (userFound.validatedEmail === false) {
         smallAlertError(userFound.message)
     } else {
@@ -17,6 +17,7 @@ formLogin.addEventListener("submit", async (event) => {
             localStorage.setItem("userOnline", JSON.stringify(userFound.data))
             window.location.href = "../admin/administrator.html"
         } else {
+            password.classList.add("is-invalid")
             smallAlertError("Contraseña incorrecta")
         }
     }
