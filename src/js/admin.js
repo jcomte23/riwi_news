@@ -1,3 +1,4 @@
+import { smallAlertError, smallAlertSuccess } from '../components/alerts'
 import { getCategories, storeCategory } from '../components/async_funtions_categories'
 import { getNews } from '../components/async_funtions_news'
 import '../scss/style.scss'
@@ -51,13 +52,6 @@ const indexNews = (data) => {
     })
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const news = await getNews()
-    const categories = await getCategories()
-    indexNews(news)
-    indexCatergories(categories)
-})
-
 btnLogout.addEventListener("click", () => {
     localStorage.setItem("userOnline", JSON.stringify(""))
     localStorage.setItem("isAutorizated", JSON.stringify(false))
@@ -75,11 +69,18 @@ formCategory.addEventListener("submit", async (event) => {
     if (response.created) {
         closeModal.click()
         indexCatergories(await getCategories())
+        smallAlertSuccess(response.message)
     } else {
-        alert(response.message)
+        smallAlertError(response.message)
     }
 
 })
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const news = await getNews()
+    const categories = await getCategories()
+    indexNews(news)
+    indexCatergories(categories)
+})
 
 
