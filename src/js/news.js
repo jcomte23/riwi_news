@@ -1,5 +1,6 @@
 import '../scss/style.scss'
 import * as bootstrap from 'bootstrap'
+import { getNews } from '../components/asyn_funtions_news'
 
 const containerNews = document.getElementById("container-news")
 
@@ -28,13 +29,8 @@ const indexNews = (data) => {
     })
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    getNews()
+document.addEventListener('DOMContentLoaded', async () => {
+    indexNews(await getNews())
 })
 
 
-async function getNews() {
-    const response = await fetch("http://localhost:3000/news")
-    const data = await response.json()
-    indexNews(data)
-}
