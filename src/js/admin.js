@@ -14,9 +14,16 @@ const closeModal = document.querySelector(".close-modal")
 let idTemp
 
 const indexCatergories = (data) => {
-    categoriesTbody.innerHTML = ""
-    data.forEach((element, index) => {
-        categoriesTbody.innerHTML += `
+    if (data.length === 0) {
+        categoriesTbody.innerHTML = `
+        <tr>
+            <td colspan="4">there are no registered categories</td>
+        </tr>
+        `
+    } else {
+        categoriesTbody.innerHTML = ""
+        data.forEach((element, index) => {
+            categoriesTbody.innerHTML += `
         <tr>
             <td>${index + 1}</td>
             <td>${element.name}</td>
@@ -27,7 +34,9 @@ const indexCatergories = (data) => {
             </td>
         </tr>
         `
-    })
+        })
+    }
+
 }
 
 const indexNews = (data) => {
@@ -116,8 +125,18 @@ btnLogout.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", async () => {
     const news = await getNews()
     const categories = await getCategories()
-    indexNews(news)
-    indexCatergories(categories)
+
+    if (!categories.ok) {
+        smallAlertError(categories.statusText)
+    } else {
+        indexCatergories(categories.data)
+    }
+
+    // if (!news.ok) {
+    //     smallAlertError(categories.statusText)
+    // } else {
+    //     indexNews(news)
+    // }
 })
 
 

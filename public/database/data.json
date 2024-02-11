@@ -1,5 +1,11 @@
 {
-  "categories": [],
+  "categories": [
+    {
+      "id": "996c",
+      "name": "tecnología",
+      "description": "tecnoligia"
+    }
+  ],
   "news": [
     {
       "id": "1",

@@ -1,11 +1,22 @@
 export async function getCategories() {
     const response = await fetch('http://localhost:3000/categories')
-    const data = await response.json()
-    return data
+    if (response.ok) {
+        const data = await response.json()
+        return {
+            ok: response.ok,
+            data: data,
+            statusText: response.statusText
+        }
+    } else {
+        return {
+            ok: response.ok,
+            statusText: response.statusText
+        }
+    }
 }
 
-export async function showCategory(category) {
-    const response = await fetch(`http://localhost:3000/categories/${category}`)
+export async function showCategory(id) {
+    const response = await fetch(`http://localhost:3000/categories/${id}`)
     const data = await response.json()
     return data
 }
