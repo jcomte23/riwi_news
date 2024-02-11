@@ -13,6 +13,11 @@ const descriptionCategory = document.getElementById("descriptionCategory")
 const closeModal = document.querySelector(".close-modal")
 let idTemp
 
+document.addEventListener("DOMContentLoaded", async () => {
+    // const news = await getNews()
+    renderCategories()
+})
+
 const indexCatergories = (data) => {
     if (data.length === 0) {
         categoriesTbody.innerHTML = `
@@ -64,6 +69,7 @@ const indexNews = (data) => {
 
 formCategory.addEventListener("submit", async (event) => {
     event.preventDefault()
+
     const category = {
         name: nameCategory.value,
         description: descriptionCategory.value
@@ -71,20 +77,20 @@ formCategory.addEventListener("submit", async (event) => {
 
     if (idTemp === undefined) {
         const response = await storeCategory(category)
-        if (response.status) {
-            closeModal.click()
+        if (response.ok) {
             formCategory.reset()
-            indexCatergories(await getCategories())
-            smallAlertSuccess(response.message)
+            smallAlertSuccess(response.statusText)
+            closeModal.click()
+            renderCategories()
         } else {
-            smallAlertError(response.message)
+            smallAlertError(response.statusText)
         }
     } else {
         const response = await updateCategory(idTemp, category)
         if (response.status) {
             closeModal.click()
             formCategory.reset()
-            indexCatergories(await getCategories())
+            renderCategories()
             smallAlertSuccess(response.message)
             idTemp = undefined
         } else {
@@ -93,7 +99,6 @@ formCategory.addEventListener("submit", async (event) => {
 
     }
 })
-
 
 categoriesTbody.addEventListener("click", async (event) => {
     if (event.target.classList.contains("edit")) {
@@ -107,10 +112,10 @@ categoriesTbody.addEventListener("click", async (event) => {
         const id = event.target.getAttribute("data-id")
         const response = await destroyCategory(id)
         if (response.status) {
-            indexCatergories(await getCategories())
+            renderCategories()
             smallAlertSuccess(response.message)
         } else {
-            indexCatergories(await getCategories())
+            renderCategories()
             smallAlertError(response.message)
         }
     }
@@ -122,21 +127,11 @@ btnLogout.addEventListener("click", () => {
     window.location.href = "/"
 })
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const news = await getNews()
+async function renderCategories() {
     const categories = await getCategories()
-
     if (!categories.ok) {
         smallAlertError(categories.statusText)
     } else {
         indexCatergories(categories.data)
     }
-
-    // if (!news.ok) {
-    //     smallAlertError(categories.statusText)
-    // } else {
-    //     indexNews(news)
-    // }
-})
-
-
+}

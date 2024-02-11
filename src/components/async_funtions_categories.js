@@ -29,16 +29,10 @@ export async function storeCategory(category) {
         },
         body: JSON.stringify(category)
     })
-    if (response.ok) {
-        return {
-            status: true,
-            message: "Saved"
-        }
-    } else {
-        return {
-            status: false,
-            message: "Error"
-        }
+
+    return {
+        ok: response.ok,
+        statusText: response.statusText
     }
 }
 
