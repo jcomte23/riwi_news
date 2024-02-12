@@ -15,6 +15,7 @@ let idTemp
 
 document.addEventListener("DOMContentLoaded", async () => {
     renderCategories()
+    renderNews()
 })
 
 const indexCatergories = (data) => {
@@ -44,26 +45,35 @@ const indexCatergories = (data) => {
 }
 
 const indexNews = (data) => {
-    newsTbody.innerHTML = ""
-    data.forEach(element => {
-        newsTbody.innerHTML += `
+    if (data.length === 0) {
+        newsTbody.innerHTML = `
         <tr>
-            <td>
-                <img src="${element.image}"
-                    alt="photo" height="50" width="50" class="rounded-circle" />
-            </td>
-            <td>${element.title}</td>
-            <td>${element.content}</td>
-            <td>${element.publicationDate}</td>
-            <td>Kevin Mejia</td>
-            <td>Tecnología</td>
-            <td>
-                <button class="btn btn-primary">Edit</button>
-                <button class="btn btn-danger">Delete</button>
-            </td>
+            <td colspan="7">there are no registered news</td>
         </tr>
         `
-    })
+    } else {
+        newsTbody.innerHTML = ""
+        data.forEach(element => {
+            newsTbody.innerHTML += `
+            <tr>
+                <td>
+                    <img src="${element.image}"
+                        alt="photo" height="50" width="50" class="rounded-circle" />
+                </td>
+                <td>${element.title}</td>
+                <td>${element.content}</td>
+                <td>${element.publicationDate}</td>
+                <td>Kevin Mejia</td>
+                <td>Tecnología</td>
+                <td>
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+            `
+        })
+    }
+    
 }
 
 formCategory.addEventListener("submit", async (event) => {
@@ -130,5 +140,14 @@ async function renderCategories() {
         smallAlertError(categories.statusText)
     } else {
         indexCatergories(categories.data)
+    }
+}
+
+async function renderNews() {
+    const news = await getNews()
+    if (!news.ok) {
+        smallAlertError(news.statusText)
+    } else {
+        indexNews(news.data)
     }
 }
